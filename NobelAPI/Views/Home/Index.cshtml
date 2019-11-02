@@ -1,0 +1,79 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Year</th>
+            <th>Winner</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody2">
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Year</th>
+            <th>Id</th>
+            <th>Firstname</th>
+            <th>Surname</th>
+            <th>Motivation</th>
+            <th>Share</th>
+        </tr>
+    </thead>
+    <tbody id="tablebody">
+    </tbody>
+</table>
+
+
+
+<script>
+
+    $.ajax({
+        type: "GET",
+        //url: NOBEL API URL HERE,
+        dataType: "JSON",
+        contentType: "application/json;charset=utf-8;",
+        success: function (result) {
+            for (var i = 0; i < result.prizes.length; i++) {
+                
+                if (result.prizes[i].laureates != null) {
+                    var x = "<tr><td>" + result.prizes[i].category + "</td>" + "<td>" + result.prizes[i].year + "<td>" + result.prizes[i].laureates[0].id + "<td>" + result.prizes[i].laureates[0].firstname + "</td>" + "<td>" + result.prizes[i].laureates[0].surname + "</td>" + "<td>" + result.prizes[i].laureates[0].motivation + "</td>" + "<td>" + result.prizes[i].laureates[0].share + "</td></tr>";
+                }
+                else {
+                    var x = "<tr id='1'><td>" + result.prizes[i].category + "</td>" + "<td>" + result.prizes[i].year + "</td></tr>";
+                    $("#1").css("background-color", "red");
+                }
+                $("#tablebody").append(x);
+
+                //if (result.prizes[i].year == 1972 && result.prizes[i].laureates != null) {
+                //    $.ajax({
+                //    type: "POST",
+                //    url: '/Home/GetNobels',
+                //    dataType: "JSON",
+                //    data: JSON.stringify({ category: result.prizes[i].category, year: result.prizes[i].year, winner: result.prizes[i].laureates[0].firstname +" " + result.prizes[i].laureates[0].surname}),
+                //    contentType: "application/json;charset=utf-8;",
+                //    traditional: true
+                //    });
+                //}
+                
+            }
+        }
+    });
+
+    $.getJSON("SendNobels",
+        function (json) {
+            for (var i = 0; i < json.length; i++) {
+                var x = "<tr><td>" + json[i].Category + "</td>" + "<td>" + json[i].Year + "</td>" + "<td>" + json[i].Winner + "</td></tr>";
+                $("#tablebody2").append(x);
+            }
+        }
+    );
+
+</script>
